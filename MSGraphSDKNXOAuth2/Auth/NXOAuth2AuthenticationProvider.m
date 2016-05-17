@@ -188,9 +188,17 @@ typedef void (^AuthCompletion)(NSError *error);
     }];
 }
 
-//- (BOOL)loginSilent {
-//    // Placeholder: Load an existing account from the account store
-//}
+- (BOOL)loginSilent {
+    // Placeholder: Load an existing account from the account store
+    int accountCount = [[NXOAuth2AccountStore sharedStore] accounts].count;
+    
+    if (accountCount == 0) {
+        return NO;
+    } else {
+        self.userAccount = [[NXOAuth2AccountStore sharedStore] accounts][accountCount - 1];
+        return YES;
+    }
+}
 
 - (void)logout {
     [[NXOAuth2AccountStore sharedStore] removeAccount:self.userAccount];
