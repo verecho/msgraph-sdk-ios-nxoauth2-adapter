@@ -189,7 +189,6 @@ typedef void (^AuthCompletion)(NSError *error);
 }
 
 - (BOOL)loginSilent {
-    // Placeholder: Load an existing account from the account store
     int accountCount = [[NXOAuth2AccountStore sharedStore] accounts].count;
     
     if (accountCount == 0) {
