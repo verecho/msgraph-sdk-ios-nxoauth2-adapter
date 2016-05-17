@@ -26,7 +26,7 @@
 #import "MSAuthenticationViewController.h"
 #import "MSLogger.h"
 
-static NSString *const lastIdentifierKey = @"lastIdentifierKey";
+static NSString *const lastIdentifierKey = @"com.graph.nxoauth2.lastIdentifierKey";
 
 typedef void (^AuthCompletion)(NSError *error);
 
