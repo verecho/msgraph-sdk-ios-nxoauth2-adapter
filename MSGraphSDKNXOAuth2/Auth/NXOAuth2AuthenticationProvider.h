@@ -63,8 +63,7 @@
 - (void) loginWithViewController:(UIViewController*)viewController completion:(void (^)(NSError *error))completionHandler;
 
 /**
- Silent login is not implemented in this example auth provider, but if implemented would
-   attempt to obtain the last used Account, returning YES for success and NO for failure.
+ Attempts to obtain the last used Account, returning YES for success and NO for failure.
  */
 - (BOOL) loginSilent;
 

@@ -26,6 +26,8 @@
 #import "MSAuthenticationViewController.h"
 #import "MSLogger.h"
 
+static NSString *const lastIdentifierKey = @"lastIdentifierKey";
+
 typedef void (^AuthCompletion)(NSError *error);
 
 @interface NXOAuth2AuthenticationProvider ()
@@ -189,19 +191,23 @@ typedef void (^AuthCompletion)(NSError *error);
 }
 
 - (BOOL)loginSilent {
-    int accountCount = [[NXOAuth2AccountStore sharedStore] accounts].count;
+    NSString *identifier = [self lastSuccessfulLoginIdentifier];
     
-    if (accountCount == 0) {
-        return NO;
-    } else {
-        self.userAccount = [[NXOAuth2AccountStore sharedStore] accounts][accountCount - 1];
-        return YES;
+    if (identifier) {
+        for (NXOAuth2Account *account in [[NXOAuth2AccountStore sharedStore] accounts]) {
+            if ([account.identifier isEqualToString:identifier]) {
+                self.userAccount = account;
+                return YES;
+            }
+        }
     }
+    return NO;
 }
 
 - (void)logout {
     [[NXOAuth2AccountStore sharedStore] removeAccount:self.userAccount];
     self.userAccount = nil;
+    [self setLastSuccessfulLoginIdentifier:nil];
     
     // Ideally we should make an async request to MS_AADV2_LOGOUT_URL, but that takes
     //   a fair bit of 
@@ -278,6 +284,8 @@ typedef void (^AuthCompletion)(NSError *error);
         self.userAccount = account;
         self.pendingAuthCompletion(nil);
         self.pendingAuthCompletion = nil;
+        
+        [self setLastSuccessfulLoginIdentifier:self.userAccount.identifier];
     }
 }
 
@@ -287,6 +295,18 @@ typedef void (^AuthCompletion)(NSError *error);
         self.pendingAuthCompletion(error);
         self.pendingAuthCompletion = nil;
     }
+}
+
+#pragma mark - User preference
+- (void)setLastSuccessfulLoginIdentifier:(NSString *)identifier {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:identifier forKey:lastIdentifierKey];
+    [userDefaults synchronize];
+}
+
+- (NSString *)lastSuccessfulLoginIdentifier {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    return [userDefaults objectForKey:lastIdentifierKey];
 }
 
 @end
