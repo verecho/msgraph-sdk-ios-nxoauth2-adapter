@@ -191,6 +191,17 @@ typedef void (^AuthCompletion)(NSError *error);
 }
 
 - (BOOL)loginSilent {
+    NSURL *tokenURL = [NSURL URLWithString:self.tokenURL];
+    [[NXOAuth2AccountStore sharedStore] setClientID:self.clientId
+                                             secret:@""
+                                              scope:[NSSet setWithArray:self.scopes]
+                                   authorizationURL:[NSURL URLWithString:self.authorizationURL]
+                                           tokenURL:tokenURL
+                                        redirectURL:[NSURL URLWithString:self.redirectURL]
+                                      keyChainGroup:[tokenURL host]
+                                          tokenType:self.tokenType
+                                     forAccountType:@"MSGraph"];
+    
     NSString *identifier = [self lastSuccessfulLoginIdentifier];
     
     if (identifier) {
