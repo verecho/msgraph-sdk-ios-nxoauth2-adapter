@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "MSGraphSDK-NXOAuth2Adapter"
-  s.version      = "0.9.1"
+  s.version      = "0.9.2"
   s.summary      = "Limited-scope OAuth2 implementation using the NXOAuth2 library for use with the Microsoft Graph SDK"
   s.description  = <<-DESC
                     Limited-scope implementation of MSAuthenticationProvider that can perform UI login for apps registered on apps.dev.microsoft.com
