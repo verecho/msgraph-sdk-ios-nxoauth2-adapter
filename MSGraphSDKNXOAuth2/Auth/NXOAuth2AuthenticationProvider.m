@@ -37,6 +37,9 @@ typedef void (^AuthCompletion)(NSError *error);
 @property (nonatomic, copy) AuthCompletion pendingAuthCompletion;  // Used to translate NXOAuth2 observer to completion block
 @property (nonatomic, strong, readwrite) NSString *clientId;  // Override to readwrite internally
 @property (nonatomic, strong, readwrite) NSArray *scopes;  // Override to readwrite internally
+
+@property (nonatomic, strong) NSDictionary *customHttpHeaderValues;
+
 @end
 
 
@@ -229,6 +232,9 @@ typedef void (^AuthCompletion)(NSError *error);
     NSParameterAssert(request);
     NSParameterAssert(completionHandler);
     
+    // If there is a custom header value add them in
+    [self appendCustomHeaders:&request];
+    
     // If token is expired don't bother starting this connection.
     NSDate *tenSecondsAgo = [NSDate dateWithTimeIntervalSinceNow:(-10)];
     NSDate *tokenExpiresAt = self.userAccount.accessToken.expiresAt;
@@ -247,6 +253,22 @@ typedef void (^AuthCompletion)(NSError *error);
         completionHandler(request, nil);
     }
 }
+
+
+#pragma mark - Custom header values
+- (void)addCustomHttpHeaderValues:(NSDictionary *)headerValues {
+    self.customHttpHeaderValues = headerValues;
+}
+
+
+- (void)appendCustomHeaders:(NSMutableURLRequest **)request {
+    if (self.customHttpHeaderValues) {
+        [self.customHttpHeaderValues enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+            [(*request) setValue:obj forHTTPHeaderField:key];
+        }];
+    }
+}
+
 
 #pragma mark - Helpers and Callbacks
 

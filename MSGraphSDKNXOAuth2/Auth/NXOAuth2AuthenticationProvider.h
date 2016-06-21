@@ -35,6 +35,7 @@
 @property (nonatomic, strong) NSString *redirectURL;
 @property (nonatomic, strong) NSString *tokenType;
 
+
 /**
  Get the default singleton instance of OAuth2AuthenticationProvider
  */
@@ -80,5 +81,10 @@
  @param completionHandler The completion handler to be called when the auth header has been appended. This may not occur synchronously if the access token needs to be refreshed first.
  */
 - (void)appendAuthenticationHeaders:(NSMutableURLRequest *)request completion:(MSAuthenticationCompletion)completionHandler;
+
+/**
+ This sets custom header values to be added for requests at the end of appendAuthenticationHeaders..
+ */
+- (void)addCustomHttpHeaderValues:(NSDictionary *)headerValues;
 
 @end
