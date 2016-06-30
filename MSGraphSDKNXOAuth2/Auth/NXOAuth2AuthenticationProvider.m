@@ -117,14 +117,14 @@ typedef void (^AuthCompletion)(NSError *error);
     NSParameterAssert(scopes);
     self.clientId = [clientId copy];
     
-    NSMutableArray *copiedArray = [NSMutableArray arrayWithArray:scopes];
+    // NSMutableArray *copiedArray = [NSMutableArray arrayWithArray:scopes];
     
-    // Ensure 'offline_access' scope is specified, required for token refreshing.
-    if (![self.scopes containsObject:@"offline_access"]) {
-        [copiedArray addObject:@"offline_access"];
-    }
+    // // Ensure 'offline_access' scope is specified, required for token refreshing.
+    // if (![self.scopes containsObject:@"offline_access"]) {
+    //     [copiedArray addObject:@"offline_access"];
+    // }
     
-    self.scopes = copiedArray;
+    // self.scopes = copiedArray;
 }
 
 - (void)loginWithViewController:(UIViewController*)viewController
