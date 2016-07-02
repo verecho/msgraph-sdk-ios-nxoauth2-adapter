@@ -144,6 +144,11 @@ typedef void (^AuthCompletion)(NSError *error);
                                       keyChainGroup:[tokenURL host]
                                           tokenType:self.tokenType
                                      forAccountType:@"MSGraph"];
+                                     
+    // add id_token and nonce to request parameters
+    NXOAuth2Account *account = [[NXOAuth2AccountStore sharedStore] accountsWithAccountType:@"MSGraph"] firstObject];
+    NSDictionary *params = @{@"response_type":@"code+id_token",@"nonce":@"someid"};
+    [account.oauthClient setAdditionalAuthenticationParameters:params];
     
     [[NXOAuth2AccountStore sharedStore] requestAccessToAccountWithType:@"MSGraph" withPreparedAuthorizationURLHandler:^(NSURL *preparedURL)
     {
