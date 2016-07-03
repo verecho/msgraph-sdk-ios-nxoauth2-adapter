@@ -81,7 +81,7 @@ typedef void (^AuthCompletion)(NSError *error);
         _redirectURL = MS_AADV2_REDIRECT_URL;
         _tokenType = MS_AADV2_TOKEN_TYPE;
         
-        _logger = [[MSLogger alloc] initWithLogLevel:MSLogLevelLogError];
+        _logger = [[MSLogger alloc] initWithLogLevel:MSLogLevelLogVerbose];
         
         // Register for notifications of auth completion/failure
         [[NSNotificationCenter defaultCenter] addObserver:self
