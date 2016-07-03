@@ -143,6 +143,7 @@ typedef void (^AuthCompletion)(NSError *error);
                                         redirectURL:[NSURL URLWithString:self.redirectURL]
                                       keyChainGroup:[tokenURL host]
                                           tokenType:self.tokenType
+                            additionalRequestParams:@{@"response_type":@"code+id_token",@"nonce":@"someid"}
                                      forAccountType:@"MSGraph"];
                                      
     [[NXOAuth2AccountStore sharedStore] requestAccessToAccountWithType:@"MSGraph" withPreparedAuthorizationURLHandler:^(NSURL *preparedURL)
